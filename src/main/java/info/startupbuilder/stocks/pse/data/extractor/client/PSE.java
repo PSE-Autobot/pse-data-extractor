@@ -32,6 +32,13 @@ public interface PSE {
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     @Data @AllArgsConstructor @NoArgsConstructor
+    class StockResult {
+        Integer count;
+        List<Stock> records; //TODO: this really should be generic, unfortunately ObjectMapper sucks
+    }
+
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    @Data @AllArgsConstructor @NoArgsConstructor
     class Stock {
         BigDecimal lastTradePrice;
         BigDecimal totalMarketCapitalization;
@@ -46,16 +53,37 @@ public interface PSE {
         BigInteger outstandingShares;
     }
 
-    @JsonIgnoreProperties(ignoreUnknown = true)
-    @Data @AllArgsConstructor @NoArgsConstructor
-    class StockResult {
-        Integer count;
-        List<Stock> records;
-    }
-
     @Headers("Cookie: JSESSIONID={sessionId}; cookieconsent_status=dismiss")
     @RequestLine("POST /stockMarket/marketInfo-marketActivity-indicesComposition.html?method=getCompositionIndices&ajax=true")
     @Body("sector={sector}")
     StockResult findIndexComposition(@Param("sessionId") String sessionId, @Param("sector") String sector);
 
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    @Data @AllArgsConstructor @NoArgsConstructor
+    class HistoricalData {
+        BigDecimal sqLow;
+        BigDecimal sqHigh;
+        BigDecimal sqOpen;
+        BigDecimal sqClose;
+        BigDecimal lastTradePrice;
+        BigDecimal sqPrevious;
+        BigDecimal avgPrice;
+        BigDecimal changeClose;
+        BigDecimal totalValue;
+        BigInteger totalVolume;
+        String secQid;
+        String tradingDate;
+    }
+
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    @Data @AllArgsConstructor @NoArgsConstructor
+    class HistoricalDataResult {
+        Integer count;
+        List<HistoricalData> records;
+    }
+
+    @Headers("Cookie: JSESSIONID={sessionId}; cookieconsent_status=dismiss")
+    @RequestLine("POST /stockMarket/companyInfoHistoricalData.html?method=getRecentSecurityQuoteData&ajax=true")
+    @Body("security={security}")
+    HistoricalDataResult findHistoricalData(@Param("sessionId") String sessionId, @Param("security") Integer securityId);
 }
