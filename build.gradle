@@ -21,7 +21,8 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-data-rest'
 	implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
-	implementation 'org.springframework.data:spring-data-rest-hal-browser'
+	compileOnly 'org.projectlombok:lombok'
+	annotationProcessor 'org.projectlombok:lombok'
 	runtimeOnly 'org.postgresql:postgresql'
 	testImplementation('org.springframework.boot:spring-boot-starter-test') {
 		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
@@ -34,6 +35,11 @@ dependencyManagement {
 	}
 }
 
+compileJava {
+	options.compilerArgs += ["--enable-preview"]
+}
+
 test {
+	jvmArgs '--enable-preview'
 	useJUnitPlatform()
 }
