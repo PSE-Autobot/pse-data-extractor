@@ -1,0 +1,9 @@
+version: '3.7'
+services:
+  postgres:
+    image: postgres:11.6-alpine
+    environment:
+      POSTGRES_USER: pse_user
+      POSTGRES_PASSWORD: pse_secret_password
+    ports:
+      - 5432:5432
