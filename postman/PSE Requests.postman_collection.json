@@ -1,0 +1,1222 @@
+{
+	"info": {
+		"_postman_id": "1fbb46eb-0a58-421e-a703-e2d9baea602a",
+		"name": "PSE Requests",
+		"description": "Lets figure out how much data we can scrape of the public website",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Login [Extract Cookie]",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "bf6293bd-d1f0-45bb-ace1-f748fe74c1ba",
+						"exec": [
+							"pm.test(\"Cookie header is present\", function () {\r",
+							"    pm.response.to.have.header(\"Set-Cookie\");\r",
+							"});\r",
+							"\r",
+							"let cookie = postman.getResponseHeader(\"Set-Cookie\");\r",
+							"let jsessionId = cookie.substring(\r",
+							"    cookie.indexOf(\"=\") + 1,\r",
+							"    cookie.indexOf(\";\")\r",
+							");\r",
+							"\r",
+							"pm.globals.set(\"jsessionId\",jsessionId);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Connection",
+						"value": "keep-alive"
+					},
+					{
+						"key": "Upgrade-Insecure-Requests",
+						"value": "1"
+					},
+					{
+						"key": "User-Agent",
+						"value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.149 Safari/537.36"
+					},
+					{
+						"key": "Sec-Fetch-Dest",
+						"value": "document"
+					},
+					{
+						"key": "Accept",
+						"value": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9"
+					},
+					{
+						"key": "Sec-Fetch-Site",
+						"value": "none"
+					},
+					{
+						"key": "Sec-Fetch-Mode",
+						"value": "navigate"
+					},
+					{
+						"key": "Sec-Fetch-User",
+						"value": "?1"
+					},
+					{
+						"key": "Accept-Language",
+						"value": "en-US,en;q=0.9,fil;q=0.8"
+					},
+					{
+						"key": "Cookie",
+						"value": "cookieconsent_status=dismiss; JSESSIONID=45fb6e78b4fd4ae1bf84d0d8b02986973c88f0184ad7a1badc85f3b8b4802d1b.e38NbNeRbx0Pa40Lc3mMa3qQah4Ke0"
+					}
+				],
+				"url": {
+					"raw": "{{PSE_BASE_URL}}/",
+					"host": [
+						"{{PSE_BASE_URL}}"
+					],
+					"path": [
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Stocks: ALL",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "5dcae832-1b36-4495-a77b-e9c1e40db8ff",
+						"exec": [
+							"pm.test(\"Cookie header is present\", function () {\r",
+							"    pm.response.to.have.header(\"Set-Cookie\");\r",
+							"});\r",
+							"\r",
+							"let cookie = postman.getResponseHeader(\"Set-Cookie\");\r",
+							"let jsessionId = cookie.substring(\r",
+							"    cookie.indexOf(\"=\") + 1,\r",
+							"    cookie.indexOf(\";\")\r",
+							");\r",
+							"\r",
+							"pm.globals.set(\"jsessionId\",jsessionId);\r",
+							"\r",
+							"var template = `\r",
+							"    <table bgcolor=\"#FFFFFF\">\r",
+							"        <tr>\r",
+							"        {{#each headers}}\r",
+							"            <th>{{this}}</th>\r",
+							"        {{/each}}\r",
+							"        </tr>\r",
+							"\r",
+							"        {{#each response.records}}\r",
+							"            <tr>\r",
+							"                {{#each this}}\r",
+							"                    <td>{{this}}</td>\r",
+							"                {{/each}}\r",
+							"            </tr>\r",
+							"        {{/each}}\r",
+							"    </table>\r",
+							"`;\r",
+							"\r",
+							"pm.visualizer.set(template, {\r",
+							"    // Pass the response body parsed as JSON as `data`\r",
+							"    response: pm.response.json(),\r",
+							"    headers:  Object.keys(pm.response.json().records[0])\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Connection",
+						"value": "keep-alive"
+					},
+					{
+						"key": "Sec-Fetch-Dest",
+						"value": "empty"
+					},
+					{
+						"key": "X-Requested-With",
+						"value": "XMLHttpRequest"
+					},
+					{
+						"key": "User-Agent",
+						"value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.132 Safari/537.36"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded; charset=UTF-8"
+					},
+					{
+						"key": "Accept",
+						"value": "*/*"
+					},
+					{
+						"key": "Origin",
+						"value": "https://www.pse.com.ph"
+					},
+					{
+						"key": "Sec-Fetch-Site",
+						"value": "same-origin"
+					},
+					{
+						"key": "Sec-Fetch-Mode",
+						"value": "cors"
+					},
+					{
+						"key": "Referer",
+						"value": "https://www.pse.com.ph/stockMarket/marketInfo-marketActivity.html?tab=0"
+					},
+					{
+						"key": "Accept-Language",
+						"value": "en-US,en;q=0.9,fil;q=0.8"
+					},
+					{
+						"key": "Cookie",
+						"value": "JSESSIONID={{jsessionId}}; cookieconsent_status=dismiss"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "sector=ALL"
+				},
+				"url": {
+					"raw": "{{PSE_BASE_URL}}/stockMarket/marketInfo-marketActivity-indicesComposition.html?method=getCompositionIndices&ajax=true",
+					"host": [
+						"{{PSE_BASE_URL}}"
+					],
+					"path": [
+						"stockMarket",
+						"marketInfo-marketActivity-indicesComposition.html"
+					],
+					"query": [
+						{
+							"key": "method",
+							"value": "getCompositionIndices"
+						},
+						{
+							"key": "ajax",
+							"value": "true"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Stocks: PSE Index",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "fa589299-af04-4176-b466-7c15223c4e02",
+						"exec": [
+							"pm.test(\"Cookie header is present\", function () {\r",
+							"    pm.response.to.have.header(\"Set-Cookie\");\r",
+							"});\r",
+							"\r",
+							"let cookie = postman.getResponseHeader(\"Set-Cookie\");\r",
+							"let jsessionId = cookie.substring(\r",
+							"    cookie.indexOf(\"=\") + 1,\r",
+							"    cookie.indexOf(\";\")\r",
+							");\r",
+							"\r",
+							"pm.globals.set(\"jsessionId\",jsessionId);\r",
+							"\r",
+							"var template = `\r",
+							"    <table bgcolor=\"#FFFFFF\">\r",
+							"        <tr>\r",
+							"        {{#each headers}}\r",
+							"            <th>{{this}}</th>\r",
+							"        {{/each}}\r",
+							"        </tr>\r",
+							"\r",
+							"        {{#each response.records}}\r",
+							"            <tr>\r",
+							"                {{#each this}}\r",
+							"                    <td>{{this}}</td>\r",
+							"                {{/each}}\r",
+							"            </tr>\r",
+							"        {{/each}}\r",
+							"    </table>\r",
+							"`;\r",
+							"\r",
+							"pm.visualizer.set(template, {\r",
+							"    // Pass the response body parsed as JSON as `data`\r",
+							"    response: pm.response.json(),\r",
+							"    headers:  Object.keys(pm.response.json().records[0])\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Connection",
+						"value": "keep-alive"
+					},
+					{
+						"key": "Sec-Fetch-Dest",
+						"value": "empty"
+					},
+					{
+						"key": "X-Requested-With",
+						"value": "XMLHttpRequest"
+					},
+					{
+						"key": "User-Agent",
+						"value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.132 Safari/537.36"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded; charset=UTF-8"
+					},
+					{
+						"key": "Accept",
+						"value": "*/*"
+					},
+					{
+						"key": "Origin",
+						"value": "https://www.pse.com.ph"
+					},
+					{
+						"key": "Sec-Fetch-Site",
+						"value": "same-origin"
+					},
+					{
+						"key": "Sec-Fetch-Mode",
+						"value": "cors"
+					},
+					{
+						"key": "Referer",
+						"value": "https://www.pse.com.ph/stockMarket/marketInfo-marketActivity.html?tab=0"
+					},
+					{
+						"key": "Accept-Language",
+						"value": "en-US,en;q=0.9,fil;q=0.8"
+					},
+					{
+						"key": "Cookie",
+						"value": "JSESSIONID={{jsessionId}}; cookieconsent_status=dismiss"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "sector=PSE"
+				},
+				"url": {
+					"raw": "{{PSE_BASE_URL}}/stockMarket/marketInfo-marketActivity-indicesComposition.html?method=getCompositionIndices&ajax=true",
+					"host": [
+						"{{PSE_BASE_URL}}"
+					],
+					"path": [
+						"stockMarket",
+						"marketInfo-marketActivity-indicesComposition.html"
+					],
+					"query": [
+						{
+							"key": "method",
+							"value": "getCompositionIndices"
+						},
+						{
+							"key": "ajax",
+							"value": "true"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Stocks: Financial Sector",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "246f0b49-1ba8-4011-9f1c-2d0f8bf3d506",
+						"exec": [
+							"pm.test(\"Cookie header is present\", function () {\r",
+							"    pm.response.to.have.header(\"Set-Cookie\");\r",
+							"});\r",
+							"\r",
+							"let cookie = postman.getResponseHeader(\"Set-Cookie\");\r",
+							"let jsessionId = cookie.substring(\r",
+							"    cookie.indexOf(\"=\") + 1,\r",
+							"    cookie.indexOf(\";\")\r",
+							");\r",
+							"\r",
+							"pm.globals.set(\"jsessionId\",jsessionId);\r",
+							"\r",
+							"var template = `\r",
+							"    <table bgcolor=\"#FFFFFF\">\r",
+							"        <tr>\r",
+							"        {{#each headers}}\r",
+							"            <th>{{this}}</th>\r",
+							"        {{/each}}\r",
+							"        </tr>\r",
+							"\r",
+							"        {{#each response.records}}\r",
+							"            <tr>\r",
+							"                {{#each this}}\r",
+							"                    <td>{{this}}</td>\r",
+							"                {{/each}}\r",
+							"            </tr>\r",
+							"        {{/each}}\r",
+							"    </table>\r",
+							"`;\r",
+							"\r",
+							"pm.visualizer.set(template, {\r",
+							"    // Pass the response body parsed as JSON as `data`\r",
+							"    response: pm.response.json(),\r",
+							"    headers:  Object.keys(pm.response.json().records[0])\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Connection",
+						"value": "keep-alive"
+					},
+					{
+						"key": "Sec-Fetch-Dest",
+						"value": "empty"
+					},
+					{
+						"key": "X-Requested-With",
+						"value": "XMLHttpRequest"
+					},
+					{
+						"key": "User-Agent",
+						"value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.132 Safari/537.36"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded; charset=UTF-8"
+					},
+					{
+						"key": "Accept",
+						"value": "*/*"
+					},
+					{
+						"key": "Origin",
+						"value": "https://www.pse.com.ph"
+					},
+					{
+						"key": "Sec-Fetch-Site",
+						"value": "same-origin"
+					},
+					{
+						"key": "Sec-Fetch-Mode",
+						"value": "cors"
+					},
+					{
+						"key": "Referer",
+						"value": "https://www.pse.com.ph/stockMarket/marketInfo-marketActivity.html?tab=0"
+					},
+					{
+						"key": "Accept-Language",
+						"value": "en-US,en;q=0.9,fil;q=0.8"
+					},
+					{
+						"key": "Cookie",
+						"value": "JSESSIONID={{jsessionId}}; cookieconsent_status=dismiss"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "sector=FIN"
+				},
+				"url": {
+					"raw": "{{PSE_BASE_URL}}/stockMarket/marketInfo-marketActivity-indicesComposition.html?method=getCompositionIndices&ajax=true",
+					"host": [
+						"{{PSE_BASE_URL}}"
+					],
+					"path": [
+						"stockMarket",
+						"marketInfo-marketActivity-indicesComposition.html"
+					],
+					"query": [
+						{
+							"key": "method",
+							"value": "getCompositionIndices"
+						},
+						{
+							"key": "ajax",
+							"value": "true"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Company Info",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "4d063bfd-a57d-4bb8-bb1e-9432788dbf73",
+						"exec": [
+							"pm.test(\"Cookie header is present\", function () {\r",
+							"    pm.response.to.have.header(\"Set-Cookie\");\r",
+							"});\r",
+							"\r",
+							"let cookie = postman.getResponseHeader(\"Set-Cookie\");\r",
+							"let jsessionId = cookie.substring(\r",
+							"    cookie.indexOf(\"=\") + 1,\r",
+							"    cookie.indexOf(\";\")\r",
+							");\r",
+							"\r",
+							"pm.globals.set(\"jsessionId\",jsessionId);\r",
+							"\r",
+							"var template = `\r",
+							"    <table bgcolor=\"#FFFFFF\">\r",
+							"        <tr>\r",
+							"        {{#each headers}}\r",
+							"            <th>{{this}}</th>\r",
+							"        {{/each}}\r",
+							"        </tr>\r",
+							"\r",
+							"        {{#each response.records}}\r",
+							"            <tr>\r",
+							"                {{#each this}}\r",
+							"                    <td>{{this}}</td>\r",
+							"                {{/each}}\r",
+							"            </tr>\r",
+							"        {{/each}}\r",
+							"    </table>\r",
+							"`;\r",
+							"\r",
+							"pm.visualizer.set(template, {\r",
+							"    // Pass the response body parsed as JSON as `data`\r",
+							"    response: pm.response.json(),\r",
+							"    headers:  Object.keys(pm.response.json().records[0])\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Connection",
+						"value": "keep-alive"
+					},
+					{
+						"key": "Sec-Fetch-Dest",
+						"value": "empty"
+					},
+					{
+						"key": "X-Requested-With",
+						"value": "XMLHttpRequest"
+					},
+					{
+						"key": "User-Agent",
+						"value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.132 Safari/537.36"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded; charset=UTF-8"
+					},
+					{
+						"key": "Accept",
+						"value": "*/*"
+					},
+					{
+						"key": "Origin",
+						"value": "https://www.pse.com.ph"
+					},
+					{
+						"key": "Sec-Fetch-Site",
+						"value": "same-origin"
+					},
+					{
+						"key": "Sec-Fetch-Mode",
+						"value": "cors"
+					},
+					{
+						"key": "Referer",
+						"value": "https://www.pse.com.ph/stockMarket/companyInfo.html?id=57&security=180&tab=0"
+					},
+					{
+						"key": "Accept-Language",
+						"value": "en-US,en;q=0.9,fil;q=0.8"
+					},
+					{
+						"key": "Cookie",
+						"value": "JSESSIONID={{jsessionId}}; cookieconsent_status=dismiss"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "company=57&security=180"
+				},
+				"url": {
+					"raw": "{{PSE_BASE_URL}}/stockMarket/companyInfo.html?method=fetchHeaderData&ajax=true",
+					"host": [
+						"{{PSE_BASE_URL}}"
+					],
+					"path": [
+						"stockMarket",
+						"companyInfo.html"
+					],
+					"query": [
+						{
+							"key": "method",
+							"value": "fetchHeaderData"
+						},
+						{
+							"key": "ajax",
+							"value": "true"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Company Info: Historical Market Statistics",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "c152a7d7-49bb-4bb7-aa5e-fa2f17925be6",
+						"exec": [
+							"pm.test(\"Cookie header is present\", function () {\r",
+							"    pm.response.to.have.header(\"Set-Cookie\");\r",
+							"});\r",
+							"\r",
+							"let cookie = postman.getResponseHeader(\"Set-Cookie\");\r",
+							"let jsessionId = cookie.substring(\r",
+							"    cookie.indexOf(\"=\") + 1,\r",
+							"    cookie.indexOf(\";\")\r",
+							");\r",
+							"\r",
+							"pm.globals.set(\"jsessionId\",jsessionId);\r",
+							"\r",
+							"var template = `\r",
+							"    <table bgcolor=\"#FFFFFF\">\r",
+							"        <tr>\r",
+							"        {{#each headers}}\r",
+							"            <th>{{this}}</th>\r",
+							"        {{/each}}\r",
+							"        </tr>\r",
+							"\r",
+							"        {{#each response.records}}\r",
+							"            <tr>\r",
+							"                {{#each this}}\r",
+							"                    <td>{{this}}</td>\r",
+							"                {{/each}}\r",
+							"            </tr>\r",
+							"        {{/each}}\r",
+							"    </table>\r",
+							"`;\r",
+							"\r",
+							"pm.visualizer.set(template, {\r",
+							"    // Pass the response body parsed as JSON as `data`\r",
+							"    response: pm.response.json(),\r",
+							"    headers:  Object.keys(pm.response.json().records[0])\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Connection",
+						"value": "keep-alive"
+					},
+					{
+						"key": "Sec-Fetch-Dest",
+						"value": "empty"
+					},
+					{
+						"key": "X-Requested-With",
+						"value": "XMLHttpRequest"
+					},
+					{
+						"key": "User-Agent",
+						"value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.132 Safari/537.36"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded; charset=UTF-8"
+					},
+					{
+						"key": "Accept",
+						"value": "*/*"
+					},
+					{
+						"key": "Origin",
+						"value": "https://www.pse.com.ph"
+					},
+					{
+						"key": "Sec-Fetch-Site",
+						"value": "same-origin"
+					},
+					{
+						"key": "Sec-Fetch-Mode",
+						"value": "cors"
+					},
+					{
+						"key": "Referer",
+						"value": "https://www.pse.com.ph/stockMarket/companyInfo.html?id=57&security=180&tab=0"
+					},
+					{
+						"key": "Accept-Language",
+						"value": "en-US,en;q=0.9,fil;q=0.8"
+					},
+					{
+						"key": "Cookie",
+						"value": "JSESSIONID={{jsessionId}}; cookieconsent_status=dismiss"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "security=180"
+				},
+				"url": {
+					"raw": "{{PSE_BASE_URL}}/stockMarket/companyInfoSecurityInformation.html?method=getSecurityYearTotals&ajax=true",
+					"host": [
+						"{{PSE_BASE_URL}}"
+					],
+					"path": [
+						"stockMarket",
+						"companyInfoSecurityInformation.html"
+					],
+					"query": [
+						{
+							"key": "method",
+							"value": "getSecurityYearTotals"
+						},
+						{
+							"key": "ajax",
+							"value": "true"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Company Info: Historical Data",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "466dc2d9-e8a6-486c-ba39-01927bd4fe21",
+						"exec": [
+							"pm.test(\"Cookie header is present\", function () {\r",
+							"    pm.response.to.have.header(\"Set-Cookie\");\r",
+							"});\r",
+							"\r",
+							"let cookie = postman.getResponseHeader(\"Set-Cookie\");\r",
+							"let jsessionId = cookie.substring(\r",
+							"    cookie.indexOf(\"=\") + 1,\r",
+							"    cookie.indexOf(\";\")\r",
+							");\r",
+							"\r",
+							"pm.globals.set(\"jsessionId\",jsessionId);\r",
+							"\r",
+							"var template = `\r",
+							"    <table bgcolor=\"#FFFFFF\">\r",
+							"        <tr>\r",
+							"        {{#each headers}}\r",
+							"            <th>{{this}}</th>\r",
+							"        {{/each}}\r",
+							"        </tr>\r",
+							"\r",
+							"        {{#each response.records}}\r",
+							"            <tr>\r",
+							"                {{#each this}}\r",
+							"                    <td>{{this}}</td>\r",
+							"                {{/each}}\r",
+							"            </tr>\r",
+							"        {{/each}}\r",
+							"    </table>\r",
+							"`;\r",
+							"\r",
+							"pm.visualizer.set(template, {\r",
+							"    // Pass the response body parsed as JSON as `data`\r",
+							"    response: pm.response.json(),\r",
+							"    headers:  Object.keys(pm.response.json().records[0])\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Connection",
+						"value": "keep-alive"
+					},
+					{
+						"key": "Sec-Fetch-Dest",
+						"value": "empty"
+					},
+					{
+						"key": "X-Requested-With",
+						"value": "XMLHttpRequest"
+					},
+					{
+						"key": "User-Agent",
+						"value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.132 Safari/537.36"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded; charset=UTF-8"
+					},
+					{
+						"key": "Accept",
+						"value": "*/*"
+					},
+					{
+						"key": "Origin",
+						"value": "https://www.pse.com.ph"
+					},
+					{
+						"key": "Sec-Fetch-Site",
+						"value": "same-origin"
+					},
+					{
+						"key": "Sec-Fetch-Mode",
+						"value": "cors"
+					},
+					{
+						"key": "Referer",
+						"value": "https://www.pse.com.ph/stockMarket/companyInfo.html?id=69&security=127&tab=0"
+					},
+					{
+						"key": "Accept-Language",
+						"value": "en-US,en;q=0.9,fil;q=0.8"
+					},
+					{
+						"key": "Cookie",
+						"value": "JSESSIONID={{jsessionId}}; cookieconsent_status=dismiss"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "security=127"
+				},
+				"url": {
+					"raw": "{{PSE_BASE_URL}}/stockMarket/companyInfoHistoricalData.html?method=getRecentSecurityQuoteData&ajax=true",
+					"host": [
+						"{{PSE_BASE_URL}}"
+					],
+					"path": [
+						"stockMarket",
+						"companyInfoHistoricalData.html"
+					],
+					"query": [
+						{
+							"key": "method",
+							"value": "getRecentSecurityQuoteData"
+						},
+						{
+							"key": "ajax",
+							"value": "true"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Daily Summary: Most Active",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "cdb1a10e-96a9-47b8-b943-03e9a309c736",
+						"exec": [
+							"pm.test(\"Cookie header is present\", function () {\r",
+							"    pm.response.to.have.header(\"Set-Cookie\");\r",
+							"});\r",
+							"\r",
+							"let cookie = postman.getResponseHeader(\"Set-Cookie\");\r",
+							"let jsessionId = cookie.substring(\r",
+							"    cookie.indexOf(\"=\") + 1,\r",
+							"    cookie.indexOf(\";\")\r",
+							");\r",
+							"\r",
+							"pm.globals.set(\"jsessionId\",jsessionId);\r",
+							"\r",
+							"var template = `\r",
+							"    <table bgcolor=\"#FFFFFF\">\r",
+							"        <tr>\r",
+							"        {{#each headers}}\r",
+							"            <th>{{this}}</th>\r",
+							"        {{/each}}\r",
+							"        </tr>\r",
+							"\r",
+							"        {{#each response.records}}\r",
+							"            <tr>\r",
+							"                {{#each this}}\r",
+							"                    <td>{{this}}</td>\r",
+							"                {{/each}}\r",
+							"            </tr>\r",
+							"        {{/each}}\r",
+							"    </table>\r",
+							"`;\r",
+							"\r",
+							"pm.visualizer.set(template, {\r",
+							"    // Pass the response body parsed as JSON as `data`\r",
+							"    response: pm.response.json(),\r",
+							"    headers:  Object.keys(pm.response.json().records[0])\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Connection",
+						"value": "keep-alive"
+					},
+					{
+						"key": "Sec-Fetch-Dest",
+						"value": "empty"
+					},
+					{
+						"key": "X-Requested-With",
+						"value": "XMLHttpRequest"
+					},
+					{
+						"key": "User-Agent",
+						"value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.132 Safari/537.36"
+					},
+					{
+						"key": "Accept",
+						"value": "*/*"
+					},
+					{
+						"key": "Sec-Fetch-Site",
+						"value": "same-origin"
+					},
+					{
+						"key": "Sec-Fetch-Mode",
+						"value": "cors"
+					},
+					{
+						"key": "Referer",
+						"value": "https://www.pse.com.ph/stockMarket/home.html"
+					},
+					{
+						"key": "Accept-Language",
+						"value": "en-US,en;q=0.9,fil;q=0.8"
+					},
+					{
+						"key": "Cookie",
+						"value": "JSESSIONID={{jsessionId}}; cookieconsent_status=dismiss"
+					}
+				],
+				"url": {
+					"raw": "{{PSE_BASE_URL}}/stockMarket/dailySummary.html?method=getTopSecurity&limit=10&ajax=true&_dc=1584242662780",
+					"host": [
+						"{{PSE_BASE_URL}}"
+					],
+					"path": [
+						"stockMarket",
+						"dailySummary.html"
+					],
+					"query": [
+						{
+							"key": "method",
+							"value": "getTopSecurity"
+						},
+						{
+							"key": "limit",
+							"value": "10"
+						},
+						{
+							"key": "ajax",
+							"value": "true"
+						},
+						{
+							"key": "_dc",
+							"value": "1584242662780"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Daily Summary: Losers",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "5c2902e7-72d8-41a8-9eb1-eff97130a24d",
+						"exec": [
+							"pm.test(\"Cookie header is present\", function () {\r",
+							"    pm.response.to.have.header(\"Set-Cookie\");\r",
+							"});\r",
+							"\r",
+							"let cookie = postman.getResponseHeader(\"Set-Cookie\");\r",
+							"let jsessionId = cookie.substring(\r",
+							"    cookie.indexOf(\"=\") + 1,\r",
+							"    cookie.indexOf(\";\")\r",
+							");\r",
+							"\r",
+							"pm.globals.set(\"jsessionId\",jsessionId);\r",
+							"\r",
+							"var template = `\r",
+							"    <table bgcolor=\"#FFFFFF\">\r",
+							"        <tr>\r",
+							"        {{#each headers}}\r",
+							"            <th>{{this}}</th>\r",
+							"        {{/each}}\r",
+							"        </tr>\r",
+							"\r",
+							"        {{#each response.records}}\r",
+							"            <tr>\r",
+							"                {{#each this}}\r",
+							"                    <td>{{this}}</td>\r",
+							"                {{/each}}\r",
+							"            </tr>\r",
+							"        {{/each}}\r",
+							"    </table>\r",
+							"`;\r",
+							"\r",
+							"pm.visualizer.set(template, {\r",
+							"    // Pass the response body parsed as JSON as `data`\r",
+							"    response: pm.response.json(),\r",
+							"    headers:  Object.keys(pm.response.json().records[0])\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Connection",
+						"value": "keep-alive"
+					},
+					{
+						"key": "Sec-Fetch-Dest",
+						"value": "empty"
+					},
+					{
+						"key": "X-Requested-With",
+						"value": "XMLHttpRequest"
+					},
+					{
+						"key": "User-Agent",
+						"value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.132 Safari/537.36"
+					},
+					{
+						"key": "Accept",
+						"value": "*/*"
+					},
+					{
+						"key": "Sec-Fetch-Site",
+						"value": "same-origin"
+					},
+					{
+						"key": "Sec-Fetch-Mode",
+						"value": "cors"
+					},
+					{
+						"key": "Referer",
+						"value": "https://www.pse.com.ph/stockMarket/home.html"
+					},
+					{
+						"key": "Accept-Language",
+						"value": "en-US,en;q=0.9,fil;q=0.8"
+					},
+					{
+						"key": "Cookie",
+						"value": "JSESSIONID={{jsessionId}}; cookieconsent_status=dismiss"
+					}
+				],
+				"url": {
+					"raw": "{{PSE_BASE_URL}}/stockMarket/dailySummary.html?method=getDeclinesSecurity&limit=10&ajax=true&_dc=1584243120449",
+					"host": [
+						"{{PSE_BASE_URL}}"
+					],
+					"path": [
+						"stockMarket",
+						"dailySummary.html"
+					],
+					"query": [
+						{
+							"key": "method",
+							"value": "getDeclinesSecurity"
+						},
+						{
+							"key": "limit",
+							"value": "10"
+						},
+						{
+							"key": "ajax",
+							"value": "true"
+						},
+						{
+							"key": "_dc",
+							"value": "1584243120449"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Daily Summary: Gainers",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "e396615b-7c3e-475d-adfb-200915be5f33",
+						"exec": [
+							"pm.test(\"Cookie header is present\", function () {\r",
+							"    pm.response.to.have.header(\"Set-Cookie\");\r",
+							"});\r",
+							"\r",
+							"let cookie = postman.getResponseHeader(\"Set-Cookie\");\r",
+							"let jsessionId = cookie.substring(\r",
+							"    cookie.indexOf(\"=\") + 1,\r",
+							"    cookie.indexOf(\";\")\r",
+							");\r",
+							"\r",
+							"pm.globals.set(\"jsessionId\",jsessionId);\r",
+							"\r",
+							"var template = `\r",
+							"    <table bgcolor=\"#FFFFFF\">\r",
+							"        <tr>\r",
+							"        {{#each headers}}\r",
+							"            <th>{{this}}</th>\r",
+							"        {{/each}}\r",
+							"        </tr>\r",
+							"\r",
+							"        {{#each response.records}}\r",
+							"            <tr>\r",
+							"                {{#each this}}\r",
+							"                    <td>{{this}}</td>\r",
+							"                {{/each}}\r",
+							"            </tr>\r",
+							"        {{/each}}\r",
+							"    </table>\r",
+							"`;\r",
+							"\r",
+							"pm.visualizer.set(template, {\r",
+							"    // Pass the response body parsed as JSON as `data`\r",
+							"    response: pm.response.json(),\r",
+							"    headers:  Object.keys(pm.response.json().records[0])\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Connection",
+						"value": "keep-alive"
+					},
+					{
+						"key": "Sec-Fetch-Dest",
+						"value": "empty"
+					},
+					{
+						"key": "X-Requested-With",
+						"value": "XMLHttpRequest"
+					},
+					{
+						"key": "User-Agent",
+						"value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.132 Safari/537.36"
+					},
+					{
+						"key": "Accept",
+						"value": "*/*"
+					},
+					{
+						"key": "Sec-Fetch-Site",
+						"value": "same-origin"
+					},
+					{
+						"key": "Sec-Fetch-Mode",
+						"value": "cors"
+					},
+					{
+						"key": "Referer",
+						"value": "https://www.pse.com.ph/stockMarket/home.html"
+					},
+					{
+						"key": "Accept-Language",
+						"value": "en-US,en;q=0.9,fil;q=0.8"
+					},
+					{
+						"key": "Cookie",
+						"value": "JSESSIONID={{jsessionId}}; cookieconsent_status=dismiss"
+					}
+				],
+				"url": {
+					"raw": "{{PSE_BASE_URL}}/stockMarket/dailySummary.html?method=getAdvancedSecurity&limit=10&ajax=true&_dc=1584243235431",
+					"host": [
+						"{{PSE_BASE_URL}}"
+					],
+					"path": [
+						"stockMarket",
+						"dailySummary.html"
+					],
+					"query": [
+						{
+							"key": "method",
+							"value": "getAdvancedSecurity"
+						},
+						{
+							"key": "limit",
+							"value": "10"
+						},
+						{
+							"key": "ajax",
+							"value": "true"
+						},
+						{
+							"key": "_dc",
+							"value": "1584243235431"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}
