@@ -17,14 +17,13 @@ import org.springframework.cloud.openfeign.FeignClient;
         "Sec-Fetch-Site: same-origin",
         "Sec-Fetch-Mode: cors",
         "Referer: https://www.pse.com.ph/stockMarket/marketInfo-marketActivity.html?tab=0",
-        "Accept-Language: en-US,en;q=0.9,fil;q=0.8",
-        "Content-Type: text/plain"
+        "Accept-Language: en-US,en;q=0.9,fil;q=0.8"
 })
 @FeignClient(name = "pse", url = "https://www.pse.com.ph")
 public interface PSE {
 
     @Headers("Cookie: {cookie}")
-    @RequestLine("POST stockMarket/marketInfo-marketActivity-indicesComposition.html?method=getCompositionIndices&ajax=true")
+    @RequestLine("POST /stockMarket/marketInfo-marketActivity-indicesComposition.html?method=getCompositionIndices&ajax=true")
     @Body("sector={sector}")
     String index(@Param("cookie") String cookie, @Param("sector") String sector);
 
