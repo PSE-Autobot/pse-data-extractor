@@ -1,10 +1,16 @@
 package info.startupbuilder.stocks.pse.data.extractor.client;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import feign.Body;
 import feign.Headers;
 import feign.Param;
 import feign.RequestLine;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.cloud.openfeign.FeignClient;
+
+import java.util.List;
 
 @Headers({
         "Connection: keep-alive",
@@ -19,12 +25,28 @@ import org.springframework.cloud.openfeign.FeignClient;
         "Referer: https://www.pse.com.ph/stockMarket/marketInfo-marketActivity.html?tab=0",
         "Accept-Language: en-US,en;q=0.9,fil;q=0.8"
 })
-@FeignClient(name = "pse", url = "https://www.pse.com.ph")
+@FeignClient(name = "pse", url = "https://www.pse.com.ph", configuration = PSEConfig.class)
 public interface PSE {
+
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    @Data @AllArgsConstructor @NoArgsConstructor
+    class Stock {
+        Float lastTradePrice;
+        Float totalMarketCapitalization;
+        Float freeFloatLevel;
+        String lastTradeDate;
+    }
+
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    @Data @AllArgsConstructor @NoArgsConstructor
+    class Result {
+        Integer count;
+        List<Stock> records;
+    }
 
     @Headers("Cookie: {cookie}")
     @RequestLine("POST /stockMarket/marketInfo-marketActivity-indicesComposition.html?method=getCompositionIndices&ajax=true")
     @Body("sector={sector}")
-    String index(@Param("cookie") String cookie, @Param("sector") String sector);
+    Result index(@Param("cookie") String cookie, @Param("sector") String sector);
 
 }

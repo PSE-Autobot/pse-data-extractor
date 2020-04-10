@@ -13,17 +13,15 @@ public class DemoController {
 
     private final PSE pse;
 
+    /**
+     * curl --location
+     * --request GET 'http://localhost:8080/api/test?sessionId=xxxjSessionIdxxx'
+     *
+     * @param sessionId the session id as extracted from the PSE home page
+     * @return the result
+     */
     @GetMapping(path = "test")
-    public @ResponseBody String index(@RequestParam("sessionId") String sessionId) {
-
-        String response;
-
-        try {
-            response = pse.index("JSESSIONID=" + sessionId + "; cookieconsent_status=dismiss", "ALL");
-        } catch (Exception e) {
-            response = e.getMessage();
-        }
-
-        return response;
+    public @ResponseBody PSE.Result index(@RequestParam("sessionId") String sessionId) {
+        return pse.index("JSESSIONID=" + sessionId + "; cookieconsent_status=dismiss", "ALL");
     }
 }
