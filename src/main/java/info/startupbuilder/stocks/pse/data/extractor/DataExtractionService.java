@@ -13,13 +13,14 @@ import javax.transaction.Transactional;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
-@Service @Transactional
+@Service
 public class DataExtractionService {
 
     private final PSE pse;
     private final CompanyRepository companyRepository;
     private final HistoricalDataRepository historicalDataRepository;
 
+    @Transactional
     public void syncCompanyList(String sessionId, String sector) {
 
         var results = pse.findIndexComposition(sessionId, sector)
@@ -34,6 +35,7 @@ public class DataExtractionService {
         companyRepository.saveAll(list);
     }
 
+    @Transactional
     public void syncHistoricalData(String sessionId, String symbol) {
 
         Company toSync = companyRepository.findBySecuritySymbol(symbol)
@@ -51,5 +53,12 @@ public class DataExtractionService {
         }).collect(Collectors.toList());
 
         historicalDataRepository.saveAll(list);
+    }
+
+    public void syncAllHistoricalData(String sessionId) {
+
+        companyRepository.findAll().forEach(c -> {
+            syncHistoricalData(sessionId, c.getSecuritySymbol());
+        });
     }
 }

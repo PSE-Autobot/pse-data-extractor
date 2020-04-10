@@ -42,4 +42,18 @@ public class DataExtractionController {
 
         return ResponseEntity.ok("OK");
     }
+
+    /**
+     * systematically syncs the last 30 days of pricing data
+     *
+     * @param sessionId the session id as extracted from the PSE home page
+     * @return OK
+     */
+    @PostMapping(path = "syncAllHistoricalData")
+    public ResponseEntity<String> syncAllHistoricalData(@RequestParam("sessionId") String sessionId) {
+
+        dataExtractionService.syncAllHistoricalData(sessionId);
+
+        return ResponseEntity.ok("OK");
+    }
 }
