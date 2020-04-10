@@ -10,6 +10,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.cloud.openfeign.FeignClient;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.List;
 
 @Headers({
@@ -31,22 +33,29 @@ public interface PSE {
     @JsonIgnoreProperties(ignoreUnknown = true)
     @Data @AllArgsConstructor @NoArgsConstructor
     class Stock {
-        Float lastTradePrice;
-        Float totalMarketCapitalization;
-        Float freeFloatLevel;
+        BigDecimal lastTradePrice;
+        BigDecimal totalMarketCapitalization;
+        BigDecimal marketCapitilization;
+        BigDecimal freeFloatLevel;
+        BigDecimal percentWeight;
+        Integer securityID;
+        Integer companyId;
+        String securitySymbol;
+        String securityName;
         String lastTradeDate;
+        BigInteger outstandingShares;
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     @Data @AllArgsConstructor @NoArgsConstructor
-    class Result {
+    class StockResult {
         Integer count;
         List<Stock> records;
     }
 
-    @Headers("Cookie: {cookie}")
+    @Headers("Cookie: JSESSIONID={sessionId}; cookieconsent_status=dismiss")
     @RequestLine("POST /stockMarket/marketInfo-marketActivity-indicesComposition.html?method=getCompositionIndices&ajax=true")
     @Body("sector={sector}")
-    Result index(@Param("cookie") String cookie, @Param("sector") String sector);
+    StockResult findIndexComposition(@Param("sessionId") String sessionId, @Param("sector") String sector);
 
 }

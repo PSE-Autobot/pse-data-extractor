@@ -14,14 +14,15 @@ public class DemoController {
     private final PSE pse;
 
     /**
-     * curl --location
-     * --request GET 'http://localhost:8080/api/test?sessionId=xxxjSessionIdxxx'
+     * extracts the components of a certain sector
      *
      * @param sessionId the session id as extracted from the PSE home page
      * @return the result
      */
-    @GetMapping(path = "test")
-    public @ResponseBody PSE.Result index(@RequestParam("sessionId") String sessionId) {
-        return pse.index("JSESSIONID=" + sessionId + "; cookieconsent_status=dismiss", "ALL");
+    @GetMapping(path = "findIndexComposition")
+    public @ResponseBody PSE.StockResult findIndexComposition(
+            @RequestParam("sessionId") String sessionId,
+            @RequestParam("sector") String sector) {
+        return pse.findIndexComposition(sessionId, sector);
     }
 }
