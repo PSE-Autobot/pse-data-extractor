@@ -1,6 +1,6 @@
 package info.startupbuilder.stocks.pse.data.extractor.api;
 
-import info.startupbuilder.stocks.pse.data.extractor.CompanyService;
+import info.startupbuilder.stocks.pse.data.extractor.DataExtractionService;
 import info.startupbuilder.stocks.pse.data.extractor.client.PSE;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.rest.webmvc.BasePathAwareController;
@@ -10,9 +10,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 @RequiredArgsConstructor
 @BasePathAwareController
-public class DemoController {
+public class DataExtractionController {
 
-    private final CompanyService companyService;
+    private final DataExtractionService dataExtractionService;
 
     /**
      * extracts the components of a certain sector
@@ -20,11 +20,11 @@ public class DemoController {
      * @param sessionId the session id as extracted from the PSE home page
      * @return the result
      */
-    @GetMapping(path = "findIndexComposition")
-    public @ResponseBody PSE.StockResult findIndexComposition(
+    @GetMapping(path = "syncCompany")
+    public @ResponseBody PSE.StockResult syncCompany(
             @RequestParam("sessionId") String sessionId,
             @RequestParam("sector") String sector) {
 
-        return companyService.findIndexComposition(sessionId, sector);
+        return dataExtractionService.syncCompanyList(sessionId, sector);
     }
 }

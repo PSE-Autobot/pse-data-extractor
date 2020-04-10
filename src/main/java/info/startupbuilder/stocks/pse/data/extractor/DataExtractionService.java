@@ -11,13 +11,13 @@ import javax.transaction.Transactional;
 
 @RequiredArgsConstructor
 @Service
-public class CompanyService {
+public class DataExtractionService {
 
     private final PSE pse;
     private final CompanyRepository companyRepository;
 
     @Transactional
-    public PSE.StockResult findIndexComposition(String sessionId,String sector) {
+    public PSE.StockResult syncCompanyList(String sessionId, String sector) {
 
         var results = pse.findIndexComposition(sessionId, sector);
 
